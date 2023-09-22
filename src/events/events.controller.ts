@@ -10,6 +10,7 @@ import {
   Param,
   Delete,
   Put,
+  Query,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { EventsService } from './events.service';

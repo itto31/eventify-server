@@ -72,7 +72,6 @@ export class EventsService {
       throw new NotFoundException('El evento no fue encontrado.');
     }
 
-    // Elimina el evento de la base de datos
     await this.prisma.event.delete({
       where: { eventId: Number(eventId) },
     });
@@ -115,8 +114,6 @@ export class EventsService {
     });
 
     if (existingRegistration) {
-      // Si ya existe una relación, puedes manejarlo como quieras
-      // Puedes lanzar un error, devolver un mensaje personalizado, etc.
       throw new ConflictException(
         'El usuario ya está registrado en este evento.',
       );
@@ -128,14 +125,13 @@ export class EventsService {
     if (!event) {
       throw new NotFoundException('El evento no fue encontrado.');
     }
-    // Registra al usuario en el evento
     await this.prisma.eventUser.create({
       data: {
         eventId: Number(eventId),
         creatorId: Number(userId),
       },
     });
-    // Puedes devolver una respuesta exitosa u otra información aquí si es necesario
+
     return 'Usuario registrado exitosamente en el evento.';
   }
 
@@ -179,21 +175,33 @@ export class EventsService {
     }
     const registrations = await this.prisma.eventUser.findMany({
       where: { eventId: Number(eventId) },
-      include: { creator: true }, // Incluir detalles de usuario si es necesario
+      include: { creator: true },
     });
 
     const formattedRegistrations = registrations.map((registration) => ({
       eventId: registration.eventId,
       userId: registration.creatorId,
-      // Otros datos que desees incluir
+
       user: {
         userId: registration.creator.userId,
         email: registration.creator.email,
         name: registration.creator.name,
-        // Otros datos del usuario si es necesario
       },
     }));
 
     return formattedRegistrations;
+  }
+
+  //buscador de eventos
+  async searchEventsByTitle(title: string) {
+    const events = await this.prisma.event.findMany({
+      where: {
+        title: {
+          contains: title,
+        },
+      },
+    });
+
+    return events;
   }
 }

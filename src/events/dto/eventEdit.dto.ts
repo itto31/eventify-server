@@ -16,4 +16,7 @@ export class EventEditDto {
   @IsOptional()
   @IsString()
   location: string;
+
+  @IsOptional()
+  categoryId: number;
 }

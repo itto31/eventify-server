@@ -22,4 +22,7 @@ export class EventDto {
 
   @IsNotEmpty()
   creatorId: number;
+
+  @IsNotEmpty()
+  categoryId: number;
 }

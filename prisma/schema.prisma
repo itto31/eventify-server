@@ -35,6 +35,8 @@ model Event {
   creator     User        @relation(fields: [creatorId], references: [userId])
   EventUser   EventUser[]
   Comment     Comment[]
+  Category    Category?   @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
 }
 
 model EventUser {
@@ -54,4 +56,10 @@ model Comment {
   creator   User     @relation(fields: [creatorId], references: [userId])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id     Int     @id @default(autoincrement())
+  name   String  @unique
+  events Event[]
 }

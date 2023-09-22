@@ -33,6 +33,7 @@ export class EventsService {
           date: new Date(eventdto.date).toISOString(),
           location: eventdto.location,
           creatorId: userId,
+          categoryId: eventdto.categoryId,
         },
       });
       return createdEvent;
